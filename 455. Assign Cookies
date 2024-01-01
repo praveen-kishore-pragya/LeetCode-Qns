@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+       sort(g.begin(),g.end());
+       sort(s.begin(),s.end());
+
+       int count = 0;
+       int pos = 0;
+       for(int i = 0;i<g.size();i++)
+       {
+           
+           for(int j=pos;j<s.size();j++)
+           {
+               if(g[i]<=s[j])
+               {
+                   count++;
+                   pos=j+1;
+                //    cout<<pos<<endl;
+                   break;
+               }
+           }
+       }
+
+       return count;
+    }
+};
+
+//Intuition:
+// Checked for each child whther there exists a cookie that can content him,
+// if yes then move forward from next cookie and not from the start or the previously used,
+// which is managed by sorting the two given arrays in ascending order.
