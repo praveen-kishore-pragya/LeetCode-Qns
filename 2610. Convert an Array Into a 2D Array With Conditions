@@ -1,0 +1,29 @@
+class Solution {
+public:
+    const int N = 1e5 + 10;
+    vector<vector<int>> findMatrix(vector<int>& nums) {
+        vector<int> arr(N);
+
+        for (int i = 0; i < nums.size(); i++) {
+            arr[nums[i]]++;
+        }
+
+        int max_size = *max_element(arr.begin(), arr.end());
+
+        vector<vector<int>> result(max_size);
+        for (int i = 0; i < nums.size(); i++) {
+            result[arr[nums[i]] - 1].push_back(nums[i]);
+            arr[nums[i]]--;
+        }
+
+        return result;
+    }
+};
+
+//Intuition:
+// store the frequency in an array, bcoz the order is reqd. for final vector<vector<int>> result,
+// and map has costly operations of nlog(n) and unordered_map stores randomly.
+// then, initializing result with the amx frequency, bcoz that is the upper limit of number of rows,
+// now flling the rows, as per the frequency,
+// e.g: if 1 appears 3 times, then it will be on rows 0,1,2, thus using (frequency - 1) we can insert it to correct row number,
+// then, successively decrease the count, as the element has already been inserted.
