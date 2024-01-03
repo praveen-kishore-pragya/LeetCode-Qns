@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int numberOfBeams(vector<string>& bank) {
+        int flag=0;
+        // int count1=0;
+        // int count2=0;
+        vector<int> countOnes;
+        for(string s : bank)
+        {
+            int count=0;
+            for(int i=0;i<s.size();i++)
+            {
+                if(s[i]=='1')
+                    count++;
+            }
+            if(count)
+                countOnes.push_back(count);
+        }
+
+        //when only one or lesser rows has security device, then zero laser beam will be there
+        if(countOnes.size()<=1)
+            return 0;
+
+        //multiplication time
+        int result =0;
+        int mul = countOnes[0];
+        for(int i=1;i<countOnes.size();i++)
+        {
+            if(countOnes[i]==0)
+                continue;
+            result += mul * countOnes[i];
+            mul = countOnes[i];
+        }
+
+        return result;
+    }
+};
+
+//Intuition:
+// find only the rows with security system, i.e having atleast one '1'
+// checking if only one or lesser rows have security device, then there cannot be any laser beams,
+// as laser beams requires two rows of security device
+// Now, the total possible beams is the proper Permutations & Combinations of the security devices (row-wise)
+// thus, simplifying the calculation to sum of multiplication of count of '1' in the successive rows.
+// e.g: bank = ["011001","000000","010100","001000"]
+//                 3,    0,       2,        1
+//         filtered: 3,2,1 (As, row with zero devices are not considered)
+//         Thus, total beams = 3*2 + 2*1 = 6 + 2 = 8
