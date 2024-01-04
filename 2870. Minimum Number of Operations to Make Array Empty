@@ -1,0 +1,66 @@
+class Solution {
+public:
+    int calculateSteps(int count)
+    {
+        int steps = 0;
+        while(count>0)
+        {
+            if(count%3 == 0)
+            {
+                steps += count/3;
+                break;
+            }
+            else
+            {
+                count-=2;
+                steps++;
+            }
+        }
+
+        return steps;
+    }
+
+
+    int minOperations(vector<int>& nums) {
+        unordered_map<int,int> freq;
+        for(int i=0;i<nums.size();i++)
+        {
+            freq[nums[i]]++;
+        }
+        int result=0;
+        //checking if any element occurs only once then the array cannot be made empty
+        for(auto it : freq)
+        {
+            // cout<<it.first<<" "<<it.second<<endl;
+            if(it.second == 1)
+                return -1;
+            else
+            {
+                result += calculateSteps(it.second);
+            }
+        }
+
+        return result;
+    }
+};
+
+//Intuition
+// Observation: Only elements with frequency atleast 2 or 3, or which can be broken down in terms of 2 or 3,
+// can be erased. Thus, first find frequency f each element and if there is any element with frequency only 1,
+// then return -1, then and there.
+// Now, for other frequencies, try to break trhem into 2 or 3, but start from dividing into terms of 2,
+// which I got the idea after observing some examples:
+// 1 -> Not possible
+// 2 -> 0 (1 step)
+// 3 -> 0 (1 step)
+// 4 -> 2 + 2
+// 5 -> 2 + 3
+// 6 -> 3 + 3 + 3
+// 7 -> 2 + 3 + 3 (3 steps) : But, would have given error, if started with 3 i.e. 3 + 3 + 1, and 1 cannot be erased
+// ...
+// ...
+// ...
+
+// Thus, clearly we should first divide into terms of 2, and if at anutmoment the frequency or count becomes
+// multiple of 3, then just divide it by 3, thus, we get the least steps to erase the number,
+// as multiplying by greater number takes lesser steps
