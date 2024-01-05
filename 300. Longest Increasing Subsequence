@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int lis(int index, int prevIndex,vector<int>& nums, vector<vector<int>>& dp)
+    {
+        if(index>=nums.size())
+            return 0;
+        if(dp[index][prevIndex+1]!=-1)
+            return dp[index][prevIndex+1];
+
+        int len = lis(index+1,prevIndex,nums,dp);
+        if(prevIndex==-1 || nums[prevIndex]<nums[index])
+        {
+            len = max(len, (1 + lis(index+1,index,nums,dp)));
+        }
+        return dp[index][prevIndex+1] = len;
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        vector<vector<int>> dp(nums.size(),vector<int>(nums.size()+1, -1));
+        int index=0;
+        int prevIndex=-1;
+        int result = lis(index,prevIndex,nums,dp);
+
+        return result;
+    }
+};
+
+//Studied from Striver's Video:
+// https://www.youtube.com/watch?v=ekcwMsSIzVc&t=650s
