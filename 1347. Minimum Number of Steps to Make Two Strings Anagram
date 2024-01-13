@@ -1,0 +1,49 @@
+class Solution {
+public:
+    int minSteps(string s, string t) {
+        if(s.size() == t.size())
+        {
+            unordered_map<char,int> sFreq;
+            unordered_map<char,int> tFreq;
+
+            for(int i=0;i<s.size();i++)
+            {
+                sFreq[s[i]]++;
+            }
+
+            for(int i=0;i<t.size();i++)
+            {
+                tFreq[t[i]]++;
+            }
+        
+            int res = 0;
+            for(pair<char,int> it: sFreq)
+            {   
+                if(tFreq.find(it.first) != tFreq.end())
+                {
+                    if(it.second - tFreq[it.first] > 0)
+                    {
+                        res += it.second - tFreq[it.first];
+                    }
+                } 
+                else
+                {
+                    res += it.second;
+                }
+            }
+
+            return res;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+};
+
+//Intuition:
+// Maintaining a map for both the given strings, to keep count of frequency of each character in each string
+// respectively,
+// Now, traverse string s, and find the amount by which that character is missing in string t, add it to the resultant variable, here "res".
+// Note: if a character of string s, does not exists in string t, then increase the "res", by the amount it exists in
+// string s, which is obvious.
