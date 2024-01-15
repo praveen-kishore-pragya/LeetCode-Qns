@@ -1,0 +1,56 @@
+class Solution {
+public:
+    vector<vector<int>> findWinners(vector<vector<int>>& matches) {
+        unordered_map<int,int> mWins;
+        unordered_map<int,int> mLosses;
+
+        for(vector<int> it : matches)
+        {
+            mWins[it[0]]++;
+            mLosses[it[1]]++;
+        }
+        set<int> sWin;
+        set<int> sLoss;
+        for(pair<int,int> it : mWins)
+        {
+            if(mLosses.find(it.first) == mLosses.end())
+            {
+                sWin.insert(it.first);
+            }
+        }
+
+        for(pair<int,int> it : mLosses)
+        {
+            if(it.second == 1)
+            {
+                sLoss.insert(it.first);
+            }
+        }
+
+        vector<vector<int>> result;
+        vector<int> res;
+        for(int i : sWin)
+        {
+            res.push_back(i);
+        }
+        result.push_back(res);
+        res.clear();
+        for(int i : sLoss)
+        {
+            res.push_back(i);
+        }
+        result.push_back(res);
+
+        return result;
+    }
+};
+
+//Intuition:
+// Maintain a map for the players who have won the matches and those who have lost respectively,
+// Now, maintain a set for players who have NOT lost any match, by traversing over map of winners and
+// checking whether that player lies in the map of Loosers,
+// Similarly, maintain a set of players, who have lost exactly one match, by traversing over the map of lost ones.
+// Now, for resultant vector of vectors, create a temporary vector, and insert both sets one by one, and insering 
+// the temporary vector int to the resultant vector of vectors. 
+// Remember to clear the temporary vector, while inserting set for second time,
+// as it contains elements from previous set.
