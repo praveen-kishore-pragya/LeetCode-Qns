@@ -1,0 +1,60 @@
+class RandomizedSet {
+public:
+    unordered_set<int> s;
+    unordered_set<int>:: iterator it;
+    RandomizedSet() {
+        // s={}; - with or without the program works
+        it = s.begin();
+    }
+    
+    bool insert(int val) {
+        if(s.find(val)!=s.end())
+        {
+            return false;
+        }
+        else{
+            s.insert(val);
+            return true;
+        }
+    }
+    
+    bool remove(int val) {
+        if(s.find(val)!=s.end())
+        {
+            s.erase(val);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    // int getRandom() {
+    //     if(it==s.end())
+    //     {
+    //         it = s.begin();
+    //     }
+    
+    //     int temp = *it;
+    //     it++;
+    //     return temp;
+    // }
+
+    //thought the same, but code from Perplexity
+    int getRandom() {
+        // Convert set to vector
+        std::vector<int> v(s.begin(), s.end());
+        // Generate a random index
+        int randomIndex = rand() % v.size();
+        // Return the random element
+        return v[randomIndex];
+    }
+};
+
+/**
+ * Your RandomizedSet object will be instantiated and called as such:
+ * RandomizedSet* obj = new RandomizedSet();
+ * bool param_1 = obj->insert(val);
+ * bool param_2 = obj->remove(val);
+ * int param_3 = obj->getRandom();
+ */
