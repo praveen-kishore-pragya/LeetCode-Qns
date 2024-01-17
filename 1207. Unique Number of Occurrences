@@ -1,0 +1,26 @@
+class Solution {
+public:
+    bool uniqueOccurrences(vector<int>& arr) {
+        unordered_map<int,int> m;
+        unordered_set<int> f;
+        for(int x : arr)
+        {
+            m[x]++;
+        }
+
+        for(pair<int,int> it : m)
+        {
+            if(f.find(it.second)!=f.end())
+                return false;
+            else
+                f.insert(it.second);
+        }
+        return true;
+    }
+};
+
+//Intuition:
+// Maintain a map, for keeping track of frequency of elements in array, arr
+// Maintain a set ,(any other container can also be used), to store the frequencies, as we have to check
+// for Unique occurences, so before inserting into the set any frequency from the map, we check whether taht frequency
+// already exists in the set or not, If it exists, then return false (meaning, there exists an element in arr, with the //// same frequency), otherwise return true, (since all elements have unique frequency).
