@@ -1,0 +1,57 @@
+class Solution {
+public:
+    vector<int> findErrorNums(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        int missingNumber = -1;
+        int duplicate = -1;
+        int missFlag = 0;
+        int dupFlag = 0;
+        for(int i=0;i<nums.size();i++)
+        {
+
+            if(missFlag==0 && nums[i] != i+1)
+            {
+                if((i+1)<nums.size() && nums[i+1] == i+1)
+                {
+                    missFlag = 0;
+                }
+                else
+                {
+                    missingNumber = i+1;
+                    missFlag = 1;
+                }
+            }
+            if(dupFlag==0 && i>=1 && nums[i]==nums[i-1])
+            {
+                duplicate = nums[i];
+                dupFlag = 1;
+            }
+        }
+
+        return {duplicate, missingNumber};
+    }
+};
+
+//Intuition:
+// Sort the array,
+// create variable for missing_number and the duplicate_number,
+// create flag variables for keeping track of unique missing_number and duplicate_number
+// Traverse the array, with conditions as underflowing and overflowing the index (i<0 and i> nums.size()) in check,
+// Since, index starts from 0, and value in the array starts from 1,  nums[i] should be containing value as i+1, if not, then results
+// in missing_number
+// if nums[i] == nums[i-1] == i+1, then it is a duplicate number,
+// But there can be cases that due to duplicate number, we can declare the number that should be at the duplicate number's place is missing, 
+// Thus, we should keep in check that whenever a number is missing, whether the next index contains that number or not,
+// e.g.: 
+// Input :
+// nums =
+// [1,5,3,2,2,7,6,4,8,9]
+
+// After sorting:
+// 1 2 2 3 4 5 6 7 8 9 
+
+// Taken care by the conditional:
+// if((i+1)<nums.size() && nums[i+1] == i+1)
+// {
+//     missFlag = 0;
+// }
