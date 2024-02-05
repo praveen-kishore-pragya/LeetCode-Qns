@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int firstUniqChar(string s) {
+        unordered_map<char,pair<int,int>> m;
+        for(int i=0;i<s.size();i++)
+        {
+            m[s[i]].first += 1;
+            m[s[i]].second = i;
+        }
+
+        int minIndex = INT_MAX;
+        for(auto c : m)
+        {
+            if(c.second.first == 1){
+                cout<<c.first<<" "<<c.second.first<<" "<<c.second.second<<endl;
+                minIndex = min(minIndex, c.second.second);
+            }
+        }
+
+        if(minIndex != INT_MAX)
+            return minIndex;
+        return -1;
+
+    }
+}; 
+
+//Intuition:
+// Maintain a map of char as key and values as pair<frequency, index) for the characters in the string
+// Then, there can be possibilities that multiple characters can have frequency as 1,
+// e.g: in s="leetcode", characters: 'l','t','c','o','d' occurs only once.
+// Thus, we have to check whether the character with frequncy occurs earlier than the other character with the
+// frequency 1 or not in the string s, and accordingly return the index,
+// and if no such character exists in the string s, then return -1
