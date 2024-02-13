@@ -1,0 +1,78 @@
+class Solution {
+public:
+    int dp[1001][1001];
+
+    bool isPotentialPredecessor(string& wordA,string& wordB){
+        if(wordB.size() - wordA.size() == 1)
+            return isSubsequence(wordA, wordB);
+        return false;
+    }
+
+    bool isSubsequence(string& wordA,string& wordB)
+    {
+        for(int i=0,j=0;j<wordB.size();)
+        {
+            if(wordA[i] == wordB[j])
+            {
+               i++; 
+            }
+            j++;
+
+            if(i == wordA.size())
+                return true;
+        }
+        return false;
+    }
+
+    static bool cmp(string& a, string& b)
+    {
+        return a.size() < b.size();
+    }
+
+    int solve(vector<string>& words, int idx, int prev)
+    {
+        if(idx >= words.size())
+            return 0;
+
+        if(prev != -1 && dp[idx][prev] != -1)
+            return dp[idx][prev];
+        
+        int skip = solve(words, idx+1, prev);
+
+        int take = 0;
+        if( prev == -1 || isPotentialPredecessor(words[prev],words[idx]) )
+        {
+            take = 1 + solve(words, idx+1, idx);
+        }
+
+        if(prev != -1 && dp[idx][prev])
+            dp[idx][prev] = max(skip, take);
+
+        return max(skip, take);
+    }
+
+    int longestStrChain(vector<string>& words) {
+        memset(dp, -1, sizeof(dp));
+        sort(words.begin(),words.end(), cmp);
+
+        int result = solve(words,0,-1);
+
+        return result;    
+    }
+};
+
+//Studied from CodeStorywithMIK - YouTube channel
+//A variant of LIS - Longest Increasing Subsequence
+//This is Recursion + Memoisation technique
+//SOrt the string, as not mentioned to pick elements in same given order,
+//also, this condition can be checked by,
+
+//Evaluating the T.C.:
+//Input: words = ["xbc","pcxbcf","xb","cxbc","pcxbc"]
+// Output: 5
+// Explanation: All the words can be put in a word chain ["xb", "xbc", "cxbc", "pcxbc", "pcxbcf"].
+
+//Check whether the prev string is predecssor or not by:
+//1. difference in length of current_idx string and prev string is -1
+//2. then, check whether prev string is a subsequence of current_idx string
+//After that apply the same logic as LIS
