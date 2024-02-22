@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int findJudge(int n, vector<vector<int>>& trust) {
+        int trusts[n+1];
+        //array to keep track of persons who trusts others
+        int trusted_by[n+1];
+        //array to keep track of person trusted_by others
+
+        //initialise the tracker arrays to zero
+        for(int i=0; i<=n; i++)
+        {
+            trusts[i] = 0;
+            trusted_by[i] = 0;
+        }
+
+        //fill the trusts and trusted_by arays, from the values of trust[][{a,b}],
+        //as trust[i][a] is the person who trusts others and,
+        //trust[i][{b}] is the perosn trusted_by others
+        for(int i=0; i<trust.size(); i++)
+        {
+            trusts[trust[i][0]]++;
+            trusted_by[trust[i][1]]++;
+        }
+
+        //TOWN JUDGE is the person who DO NOT trusts anyone and also IS NOT trusted_by anyone
+        //thus, TOWN JUDGE == {trusts[] == 0 && trusted_by[] == 0}
+        for(int i=1; i<=n; i++)
+        {
+            if(trusts[i] == 0 && trusted_by[i]==n-1)
+                return i;
+        }
+
+        //since, TOWN JUDGE was NOT FOUND, return -1
+        return -1;
+    }
+};
